@@ -10,6 +10,12 @@ def get_escape_time(c: complex, max_iterations: max) -> int | None:
 
 
 def get_complex_grid(top_left: complex, bottom_right: complex,step: float) -> np.ndarray:
+    #function takes in the top left value and the bottom right value of the complex grid and
+    #when called it takes in the values it makes two arrays one with the real numbers and one
+    #with the imaginary numbers with a step size equal to the inputted step. From here we intialize
+    #a 3 by 3 array of zeros and we add the complex and imaginary numbers to the zeros to give us our
+    #final value. Since complex values are added horizontally we have to reshape to (3,1) instead
+    # of the aranged with (1,3) dimensions. They are added together and the final array is returnedl.
     real = np.arange(top_left.real, bottom_right.real,step)
     imaginary = np.arange(top_left.imag, bottom_right.imag,-step) * 1j
     final = np.zeros((3,3))
