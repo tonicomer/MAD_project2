@@ -12,9 +12,8 @@ def get_escape_time(c: complex, max_iterations: max) -> int | None:
 def get_complex_grid(top_left: complex, bottom_right: complex,step: float) -> np.ndarray:
     real = np.arange(top_left.real, bottom_right.real,step)
     imaginary = np.arange(top_left.imag, bottom_right.imag,-step) * 1j
-    complex = np.zeros((3,3))
-    complex[::] = real + imaginary
-    complex[0,0:] + 1j
-    complex[1,0:] + 0j
-    complex[2,0:] - 1j
-    print(complex)
+    final = np.zeros((3,3))
+    imaginary = imaginary.reshape(3,1)
+    final = final + real
+    final = final + imaginary
+    return final
