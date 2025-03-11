@@ -18,29 +18,18 @@ def get_complex_grid(top_left: complex, bottom_right: complex,step: float) -> np
     # of the aranged with (1,3) dimensions. They are added together and the final array is returnedl.
     real = np.arange(top_left.real, bottom_right.real,step)
     imaginary = np.arange(top_left.imag, bottom_right.imag,-step) * 1j
-    final = np.zeros((3,3))
-    imaginary = imaginary.reshape(3,1)
+    final = np.zeros((len(real),len(real)))
+    imaginary = imaginary.reshape(len(imaginary),1)
     final = final + real
     final = final + imaginary
     return final
 
-def get_escape_time_color_arr(c_arr: np.ndarray,max_iterations: int) -> np.ndarray:
-        def get_escape_time(c: int, iterations: max) -> int | None:
-            num_iterations = 0
-            z = 0
-            for count in range(iterations):
-                num_iterations +=1
-                z = z * z + c
-                if abs(z) > 2:
-                    return count, num_iterations
-        for i,val in enumerate(c_arr):
-            color = 0
-            escape_time = get_escape_time(val, max_iterations)
-            if escape_time[0] is not None:
-                color = (escape_time[1]-escape_time[0]+1)/(escape_time[0]+1)
-                return color
-            if escape_time[0] == None:
-                return color
-            if escape_time[0] == max_iterations:
-                color = 1/(escape_time[1]+1)
-                return color
+def get_escape_time_color_arr(c_arr: np.ndarray, max_iterations: int) -> np.ndarray:
+    final_array = np.zeros((max_iterations+1, max_iterations+1))
+    for index, value in enumerate(c_arr):
+        escape_time = get_escape_time(value[0], max_iterations)
+        if escape_time is None:
+            final_array[index] + (0,0)
+        else:
+            final_array[index] = (max_iterations - escape_time + 1) / (max_iterations + 1)
+    return final_array
