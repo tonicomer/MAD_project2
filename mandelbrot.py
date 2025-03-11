@@ -23,3 +23,24 @@ def get_complex_grid(top_left: complex, bottom_right: complex,step: float) -> np
     final = final + real
     final = final + imaginary
     return final
+
+def get_escape_time_color_arr(c_arr: np.ndarray,max_iterations: int) -> np.ndarray:
+        def get_escape_time(c: int, iterations: max) -> int | None:
+            num_iterations = 0
+            z = 0
+            for count in range(iterations):
+                num_iterations +=1
+                z = z * z + c
+                if abs(z) > 2:
+                    return count, num_iterations
+        for i,val in enumerate(c_arr):
+            color = 0
+            escape_time = get_escape_time(val, max_iterations)
+            if escape_time[0] is not None:
+                color = (escape_time[1]-escape_time[0]+1)/(escape_time[0]+1)
+                return color
+            if escape_time[0] == None:
+                return color
+            if escape_time[0] == max_iterations:
+                color = 1/(escape_time[1]+1)
+                return color
