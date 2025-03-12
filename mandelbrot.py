@@ -25,11 +25,13 @@ def get_complex_grid(top_left: complex, bottom_right: complex,step: float) -> np
     return final
 
 def get_escape_time_color_arr(c_arr: np.ndarray, max_iterations: int) -> np.ndarray:
-    final_array = np.zeros((max_iterations+1, max_iterations+1))
-    for index, value in enumerate(c_arr):
-        escape_time = get_escape_time(value[0], max_iterations)
-        if escape_time is None:
-            final_array[index] + (0,0)
-        else:
-            final_array[index] = (max_iterations - escape_time + 1) / (max_iterations + 1)
-    return final_array
+    z = np.zeros_like(c_arr)
+    final_escape_time = np.zeros_like(c_arr)
+    for count in range(max_iterations):
+        z = z * z + c_arr
+        esscaped = np.abs(z) > 2
+        #print(esscaped)
+        #print(z[esscaped])
+        final_escape_time[esscaped] = z
+    return final_escape_time
+#boolean indexing
