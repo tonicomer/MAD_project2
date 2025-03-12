@@ -30,8 +30,6 @@ def get_escape_time_color_arr(c_arr: np.ndarray, max_iterations: int) -> np.ndar
     for count in range(max_iterations):
         z = z * z + c_arr
         esscaped = np.abs(z) > 2
-        #print(esscaped)
-        #print(z[esscaped])
-        final_escape_time[esscaped] = z
+        final_escape_time = z[esscaped]
     return final_escape_time
 #boolean indexing
