@@ -24,12 +24,14 @@ def get_complex_grid(top_left: complex, bottom_right: complex,step: float) -> np
     final = final + imaginary
     return final
 
+print(get_complex_grid(-1+1j, 1.1-1.1j, 1))
+
+
 def get_escape_time_color_arr(c_arr: np.ndarray, max_iterations: int) -> np.ndarray:
     z = np.zeros_like(c_arr)
     final_escape_time = np.zeros_like(c_arr)
     for count in range(max_iterations):
         z = z * z + c_arr
-        esscaped = np.abs(z) > 2
-        final_escape_time = z[esscaped]
-    return final_escape_time
-#boolean indexing
+        escaped = np.abs(z) > 2
+        final_escape_time[escaped] = z[escaped]
+    return final_escape_time.real
