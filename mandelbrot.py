@@ -29,10 +29,14 @@ print(get_complex_grid(-1+1j, 1.1-1.1j, 1))
 
 def get_escape_time_color_arr(c_arr: np.ndarray, max_iterations: int) -> np.ndarray:
     z = np.zeros_like(c_arr)
-    final_escape_time = np.zeros_like(c_arr)
+    final_escape_time = np.ones_like(c_arr, dtype=float) * (max_iterations + 1)
+    total_escaped = np.zeros_like(c_arr, dtype=bool)
     for count in range(max_iterations):
-        z = z * z + c_arr
-        escaped = np.abs(z) > 2
-        final_escape_time[escaped] = z[escaped]
-        final_escape_time[escaped is False] = 0
+        not_escaped = np.logical_not(total_escaped)
+        z[not_escaped] = (z[not_escaped] **2)  + c_arr[not_escaped]
+        cur_escaped = np.abs(z) > 2
+        new_escaped = np.logical_not(total_escaped) & cur_escaped
+        total_escaped = new_escaped | cur_escaped
+        final_escape_time[new_escaped] = count
+    final_escape_time = (max_iterations - final_escape_time + 1) / (max_iterations + 1)
     return final_escape_time
