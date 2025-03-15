@@ -18,13 +18,13 @@ def get_complex_grid(top_left: complex, bottom_right: complex,step: float) -> np
     # of the aranged with (1,3) dimensions. They are added together and the final array is returnedl.
     real = np.arange(top_left.real, bottom_right.real,step)
     imaginary = np.arange(top_left.imag, bottom_right.imag,-step) * 1j
-    final = np.zeros((len(real),len(real)))
-    imaginary = imaginary.reshape(len(imaginary),1)
+    final = np.zeros((len(imaginary),len(real)))
     final = final + real
+    imaginary = imaginary.reshape(len(imaginary),1)
     final = final + imaginary
     return final
 
-print(get_complex_grid(-1+1j, 1.1-1.1j, 1))
+#print(get_complex_grid(-1+1j, 1.1-1.1j, 1))
 
 
 def get_escape_time_color_arr(c_arr: np.ndarray, max_iterations: int) -> np.ndarray:
@@ -34,6 +34,22 @@ def get_escape_time_color_arr(c_arr: np.ndarray, max_iterations: int) -> np.ndar
     for count in range(max_iterations):
         not_escaped = np.logical_not(total_escaped)
         z[not_escaped] = (z[not_escaped] **2)  + c_arr[not_escaped]
+        cur_escaped = np.abs(z) > 2
+        new_escaped = np.logical_not(total_escaped) & cur_escaped
+        total_escaped = new_escaped | cur_escaped
+        final_escape_time[new_escaped] = count
+    final_escape_time = (max_iterations - final_escape_time + 1) / (max_iterations + 1)
+    return final_escape_time
+
+
+
+def get_julia_color_arr(grid: np.ndarray, rabbit_c: complex, max_iterations: int)->np.ndarray:
+    z = grid
+    final_escape_time = np.ones_like(grid, dtype=float) * (max_iterations + 1)
+    total_escaped = np.zeros_like(grid, dtype=bool)
+    for count in range(max_iterations):
+        not_escaped = np.logical_not(total_escaped)
+        z[not_escaped] = (z[not_escaped] **2)  + rabbit_c
         cur_escaped = np.abs(z) > 2
         new_escaped = np.logical_not(total_escaped) & cur_escaped
         total_escaped = new_escaped | cur_escaped
