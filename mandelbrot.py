@@ -28,6 +28,11 @@ def get_complex_grid(top_left: complex, bottom_right: complex,step: float) -> np
 
 
 def get_escape_time_color_arr(c_arr: np.ndarray, max_iterations: int) -> np.ndarray:
+    #function takes in a array of c values and the number of iterations needed it creates an array of zeros with same shape
+    #while also create an array of ones except that is multiplied with max iterations + 1 we loop in range max iterations to find 
+    #the escape value for each value in the array but we use numpy logical operators to stop us from going over indicies we have
+    #already calculated the escape value of. IF the escape value has an absolute value greater than 2 it is added to our new escaped array 
+    #if not that spot stays zero representing the color black. At the end a formula is run on the whole array to refine the numbers
     z = np.zeros_like(c_arr)
     final_escape_time = np.ones_like(c_arr, dtype=float) * (max_iterations + 1)
     total_escaped = np.zeros_like(c_arr, dtype=bool)
@@ -44,6 +49,12 @@ def get_escape_time_color_arr(c_arr: np.ndarray, max_iterations: int) -> np.ndar
 
 
 def get_julia_color_arr(grid: np.ndarray, rabbit_c: complex, max_iterations: int)->np.ndarray:
+    #Function is very similar to the one above except while in the loop it adds our inputted complex rabbit_C
+    #as opposed to looking through a passed in array, also we are looping through the values of the inputted grid
+    #and performing operations on them as opposed to performing the operations continually by squaring z and continuting.
+    #After this we determine if the absolute value of z is greater than 2 and if so its index is taken and that spot is now equal
+    #to the count or runtime escape. This is continuted through every spot that does not escape then we run a formula on the whole
+    #array at the end to refine the numbers.
     z = grid
     final_escape_time = np.ones_like(grid, dtype=float) * (max_iterations + 1)
     total_escaped = np.zeros_like(grid, dtype=bool)
